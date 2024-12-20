@@ -144,7 +144,7 @@ def generate_star_system():
         0: "No atmosphere"
     }
 
-    atmos_roll = 0 if size_roll == 0 else max(0, random.randint(2, 12) - 7 + size_roll)
+    atmos_roll = 0 if size_roll == 0 else max(0, min(random.randint(2, 12) - 7 + size_roll, 15))
 
     for i, j in atmos_dict.items():
         if atmos_roll >= i:
@@ -163,21 +163,15 @@ def generate_star_system():
         3: "30% water",
         2: "20% water",
         1: "10% water",
-        0: "No land masses"
+        0: "No free standing water"
     }
-
-    #hydro_roll = 0 if size_roll == 0 else max(0, random.randint(2, 12) - 7 + size_roll)
-    #hydro_roll = 0 if size_roll <= 1 elif random.randint(2, 12) - 7 + size_roll - 4 atmos_roll <= 1 or atmos_roll >= 10
-    #
-    # CHECK LOGIC IT IS PROLLY BROKEN
-    #
-    hydro_roll = 0
+    
     if size_roll <= 1:
         hydro_roll = 0
     elif atmos_roll <= 1 or atmos_roll >= 10:
-        hydro_roll = random.randint(2, 12) - 7 + size_roll - 4
-
-    #hydro_roll = 0 if size_roll <= 1 else (0 if random.randint(2, 12) - 7 + atmos_roll - 4 + atmos_roll <= 1 or atmos_roll >= 10 else random.randint(1, 10))
+        hydro_roll = max(0, min(random.randint(2, 12) - 7 + size_roll - 4, 10))
+    else:
+        hydro_roll = max(0, min(random.randint(2, 12) - 7 + size_roll, 10))
 
     for i, j in hydro_dict.items():
         if hydro_roll >= i:
@@ -199,18 +193,122 @@ def generate_star_system():
         0: "No inhabitants"
     }
 
-    pop_roll = random.randint(2, 12) - 2
+    pop_roll =  random.randint(2, 12) - 2
 
     for i, j in pop_dict.items():
         if pop_roll >= i:
             star_system["main world UPP"]["population"] = j
             break
-        
+
     #government 
-    #generate size, atmosphere, hydrographics, population, government level, law level and tech level
+    gov_dict = {
+        13: "Religious Dictatorship",
+        12: "Charismatic Oligarchy",
+        11: "Non-Charismatic Leader",
+        10: "Charismatic Dictator",
+        9: "Impersonal Bureaucracy",
+        8: "Civil Service Bureaucracy",
+        7: "Balkanization",
+        6: "Captive Government",
+        5: "Feudal Technocracy",
+        4: "Representative Democracy",
+        3: "Self-Perpetuating Oligarchy",
+        2: "Participating Democracy",
+        1: "Company/Corporation",
+        0: "No government structure"
+    }
+
+    gov_roll = max(0, min(random.randint(2, 12) - 7 + pop_roll, 13)) 
+
+    for i, j in gov_dict.items():
+        if gov_roll >= i:
+            star_system["main world UPP"]["government"] = j
+            break
+
+    #law level
+    law_dict = {
+        10: "Weapon possession is prohibited",
+        9: "Possession of any weapon outside one’s residence is prohibited",
+        8: "Long blade weapons are controlled",
+        7: "Shotguns are prohibited",
+        6: "Most firearms prohibited",
+        5: "Personal concealable firearms prohibited",
+        4: "Light assault weapons prohibited",
+        3: "Weapons of a strict military nature prohibited",
+        2: "Portable energy weapons prohibited",
+        1: "Body pistols undetectable by standard detectors, explosives, and poison gas prohibited",
+        0: "No prohibitions"
+    }
+    law_roll = max(0, min(10, random.randint(2, 12) - 7 + gov_roll, 10))
+
+    for i, j in law_dict.items():
+        if law_roll >= i:
+            star_system["main world UPP"]["law level"] = j
+            break
+
+    #technological level
+    tech_dict = {
+        15: "Technical maximum Imperial",
+        14: "Above average Imperial",    
+        13: "Above average Imperial",
+        12: "Average Imperial",          
+        11: "Average Imperial",    
+        10: "Interstellar community",
+        9: "circa 1990 to 2000",
+        8: "circa 1980 to 1989",
+        7: "circa 1970 to 1979",
+        6: "circa 1940 to 1969",
+        5: "circa 1900 to 1939",
+        4: "circa 1860 to 1900",
+        3: "circa 1700 to 1860",
+        2: "circa 1400 to 1700",
+        1: "Bronze Age to Middle Ages",
+        0: "Stone Age. Primitive"
+    }
+
+    #dm begins 💀💀
+    dm = 0
+
+    #star port dm
+    star_port_modifiers = {'A': 6, 'B': 4, 'C': 2, 'X': -4}
+    dm += star_port_modifiers.get(star_system["system contents"]["star port"], 0)
+
+    #size dm
+    if size_roll <= 1:
+        dm += 2
+    elif 2 <= size_roll <= 4:
+        dm += 1
+
+    #atmosphere dm
+    if atmos_roll <= 3 or (atmos_roll >= 10 and atmos_roll != 15):
+        dm += 1
+
+    #hydro dm
+    if hydro_roll in {9, 10}:
+        dm += 1 if hydro_roll == 9 else 2
+
+    #pp dm
+    if 1 <= pop_roll <= 5:
+        dm += 1
+    elif pop_roll == 9:
+        dm += 2
+    elif pop_roll == 10:
+        dm += 4
+
+    #gov dm
+    if gov_roll in {0, 5}:
+        dm += 1
+    elif gov_roll == 13:
+        dm -= 2
+    
+    tech_roll = max(0, min(random.randint(1,6) + dm, 15))
+
+    for i, j in tech_dict.items():
+        if tech_roll >= i:
+            star_system["main world UPP"]["technological level"] = j
+            break
+        
+    #the end
     return star_system
 
-
-star_system = generate_star_system()
-
-print(star_system)
+print(generate_star_system())
