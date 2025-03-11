@@ -8,7 +8,7 @@ class StarSystem:
         self.name = self.generateName()
         self.contents = self.generateContents()
         self.main_world_upp = self.generateUPP()
-    
+
     def generateName(self):
         return random.choice(string.ascii_letters).capitalize() + random.choice(string.ascii_letters).capitalize() + str(random.randint(0, 9)) + str(random.randint(0, 9)) + str(random.randint(0, 9))
 
@@ -31,7 +31,7 @@ class StarSystem:
             5: "B",
             2: "A"
         }
-        roll_starport = random.randint(2, 12)
+        roll_starport = random.randint(1, 6) + random.randint(1, 6)
         contents["star port"] = self.getValueRoll(roll_starport, starport_dict)
 
         # Navalbase
@@ -39,7 +39,7 @@ class StarSystem:
             8: "yes",
             2: "no"
         }
-        roll_navalbase = 0 if contents.get("star port") in ['C', 'D', 'E', 'X'] else random.randint(2, 12)
+        roll_navalbase = 0 if contents.get("star port") in ['C', 'D', 'E', 'X'] else random.randint(1, 6) + random.randint(1, 6)
         contents["naval base"] = self.getValueRoll(roll_navalbase, navalbase_dict)
 
         # Scoutbase
@@ -47,7 +47,7 @@ class StarSystem:
             7: "yes",
             2: "no"
         }
-        roll_scoutbase = 0 if contents.get("star port") in ['E', 'X'] else max(2, random.randint(2, 12) - {'C': 1, 'B': 2, 'A': 3}.get(contents.get("star port"), 0))
+        roll_scoutbase = 0 if contents.get("star port") in ['E', 'X'] else max(2, random.randint(1, 6) + random.randint(1, 6) - {'C': 1, 'B': 2, 'A': 3}.get(contents.get("star port"), 0))
         contents["scout base"] = self.getValueRoll(roll_scoutbase, scoutbase_dict)
 
         # Gas giant
@@ -55,7 +55,7 @@ class StarSystem:
             10: "no",
             2: "yes"
         }
-        roll_gasgiant = random.randint(2, 12)
+        roll_gasgiant = random.randint(1, 6) + random.randint(1, 6)
         contents["gas giant"] = self.getValueRoll(roll_gasgiant, gasgiant_dict)
 
         # Planetoids
@@ -63,7 +63,7 @@ class StarSystem:
             7: "no",
             2: "yes"
         }
-        roll_planetoids = random.randint(2, 12)
+        roll_planetoids = random.randint(1, 6) + random.randint(1, 6)
         contents["planetoids"] = self.getValueRoll(roll_planetoids, planetoids_dict)
 
         return contents
@@ -86,7 +86,7 @@ class StarSystem:
             1: "1,000mi",
             0: "Asteroid"
         }
-        size_roll = random.randint(2, 12) - 2
+        size_roll = random.randint(1, 6) + random.randint(1, 6) - 2
         main_world_upp["world size"] = self.getValueRoll(size_roll, size_dict)
 
         # Atmosphere
@@ -108,7 +108,7 @@ class StarSystem:
             1: "Trace",
             0: "No atmosphere"
         }
-        atmos_roll = 0 if size_roll == 0 else max(0, min(random.randint(2, 12) - 7 + size_roll, 15))
+        atmos_roll = 0 if size_roll == 0 else max(0, min(random.randint(1, 6) + random.randint(1, 6) - 7 + size_roll, 15))
         main_world_upp["atmosphere"] = self.getValueRoll(atmos_roll, atmos_dict)
 
         # Hydrographics
@@ -125,7 +125,7 @@ class StarSystem:
             1: "10% water",
             0: "No free standing water"
         }
-        hydro_roll = 0 if size_roll <= 1 else max(0, min(random.randint(2, 12) - 7 + size_roll - 4, 10)) if atmos_roll <= 1 or atmos_roll >= 10 else max(0, min(random.randint(2, 12) - 7 + size_roll, 10))
+        hydro_roll = 0 if size_roll <= 1 else max(0, min(random.randint(1, 6) + random.randint(1, 6) - 7 + size_roll - 4, 10)) if atmos_roll <= 1 or atmos_roll >= 10 else max(0, min(random.randint(1, 6) + random.randint(1, 6) - 7 + size_roll, 10))
         main_world_upp["hydrographics"] = self.getValueRoll(hydro_roll, hydro_dict)
 
         # Population
@@ -142,7 +142,7 @@ class StarSystem:
             1: "Tens of inhabitants",
             0: "No inhabitants"
         }
-        pop_roll = random.randint(2, 12) - 2
+        pop_roll = random.randint(1, 6) + random.randint(1, 6) - 2
         main_world_upp["population"] = self.getValueRoll(pop_roll, pop_dict)
 
         # Government
@@ -162,7 +162,7 @@ class StarSystem:
             1: "Company/Corporation",
             0: "No government structure"
         }
-        gov_roll = max(0, min(random.randint(2, 12) - 7 + pop_roll, 13))
+        gov_roll = max(0, min(random.randint(1, 6) + random.randint(1, 6) - 7 + pop_roll, 13))
         main_world_upp["government"] = self.getValueRoll(gov_roll, gov_dict)
 
         # Law level
@@ -179,7 +179,7 @@ class StarSystem:
             1: "Body pistols undetectable by standard detectors, explosives, and poison gas prohibited",
             0: "No prohibitions"
         }
-        law_roll = max(0, min(10, random.randint(2, 12) - 7 + gov_roll, 10))
+        law_roll = max(0, min(10, random.randint(1, 6) + random.randint(1, 6) - 7 + gov_roll, 10))
         main_world_upp["law level"] = self.getValueRoll(law_roll, law_dict)
 
         # Technological level
