@@ -27,7 +27,7 @@ def generate_star_system():
         2: "A"
     }
     
-    roll_starport = random.randint(2, 12)
+    roll_starport = random.randint(1, 6) + random.randint(1, 6) 
     for i, j in starport_dict.items():
         if roll_starport >= i:
             star_system["system contents"]["star port"] = j
@@ -40,7 +40,7 @@ def generate_star_system():
     }
 
     #do not roll if startport C D E X
-    roll_navalbase = 0 if star_system["system contents"]["star port"] in ['C', 'D', 'E', 'X'] else random.randint(2, 12)
+    roll_navalbase = 0 if star_system["system contents"]["star port"] in ['C', 'D', 'E', 'X'] else random.randint(1, 6) + random.randint(1, 6) 
     
 
     for i, j in navalbase_dict.items():
@@ -54,7 +54,7 @@ def generate_star_system():
         2: "no"
     }
 
-    #roll_scoutbase = random.randint(2, 12)
+    #roll_scoutbase = random.randint(1, 6) + random.randint(1, 6) 
     #if star_system["system contents"]["star port"] == 'C':
     #    roll_scoutbase -= 1
     #elif star_system["system contents"]["star port"] == 'B':
@@ -65,7 +65,7 @@ def generate_star_system():
     #    roll_scoutbase = 0
     
     #ugly one liner but what it does is it applies DMs (dice modifiers) based on the star port type
-    roll_scoutbase = 0 if star_system["system contents"]["star port"] in ['E', 'X'] else max(2, random.randint(2, 12) - {'C': 1, 'B': 2, 'A': 3}.get(star_system["system contents"]["star port"], 0))
+    roll_scoutbase = 0 if star_system["system contents"]["star port"] in ['E', 'X'] else max(2, random.randint(1, 6) + random.randint(1, 6)  - {'C': 1, 'B': 2, 'A': 3}.get(star_system["system contents"]["star port"], 0))
 
     for i, j in scoutbase_dict.items():
         if roll_scoutbase >= i:
@@ -78,7 +78,7 @@ def generate_star_system():
         2: "yes"
     }
     
-    roll_gasgiant = random.randint(2, 12)
+    roll_gasgiant = random.randint(1, 6) + random.randint(1, 6) 
     for i, j in gasgiant_dict.items():
         if roll_gasgiant >= i:
             star_system["system contents"]["gas giant"] = j
@@ -90,7 +90,7 @@ def generate_star_system():
         2: "yes"
     }
     
-    roll_planetoids = random.randint(2, 12)
+    roll_planetoids = random.randint(1, 6) + random.randint(1, 6) 
     for i, j in planetoids_dict.items():
         if roll_planetoids >= i:
             star_system["system contents"]["planetoids"] = j
@@ -117,7 +117,7 @@ def generate_star_system():
         0: "Asteroid"
     }
 
-    size_roll = random.randint(2, 12) - 2
+    size_roll = random.randint(1, 6) + random.randint(1, 6)  - 2
 
     for i, j in size_dict.items():
         if size_roll >= i:
@@ -144,7 +144,7 @@ def generate_star_system():
         0: "No atmosphere"
     }
 
-    atmos_roll = 0 if size_roll == 0 else max(0, min(random.randint(2, 12) - 7 + size_roll, 15))
+    atmos_roll = 0 if size_roll == 0 else max(0, min(random.randint(1, 6) + random.randint(1, 6)  - 7 + size_roll, 15))
 
     for i, j in atmos_dict.items():
         if atmos_roll >= i:
@@ -169,9 +169,9 @@ def generate_star_system():
     if size_roll <= 1:
         hydro_roll = 0
     elif atmos_roll <= 1 or atmos_roll >= 10:
-        hydro_roll = max(0, min(random.randint(2, 12) - 7 + size_roll - 4, 10))
+        hydro_roll = max(0, min(random.randint(1, 6) + random.randint(1, 6)  - 7 + size_roll - 4, 10))
     else:
-        hydro_roll = max(0, min(random.randint(2, 12) - 7 + size_roll, 10))
+        hydro_roll = max(0, min(random.randint(1, 6) + random.randint(1, 6)  - 7 + size_roll, 10))
 
     for i, j in hydro_dict.items():
         if hydro_roll >= i:
@@ -193,7 +193,7 @@ def generate_star_system():
         0: "No inhabitants"
     }
 
-    pop_roll =  random.randint(2, 12) - 2
+    pop_roll =  random.randint(1, 6) + random.randint(1, 6)  - 2
 
     for i, j in pop_dict.items():
         if pop_roll >= i:
@@ -218,7 +218,7 @@ def generate_star_system():
         0: "No government structure"
     }
 
-    gov_roll = max(0, min(random.randint(2, 12) - 7 + pop_roll, 13)) 
+    gov_roll = max(0, min(random.randint(1, 6) + random.randint(1, 6)  - 7 + pop_roll, 13)) 
 
     for i, j in gov_dict.items():
         if gov_roll >= i:
@@ -239,7 +239,7 @@ def generate_star_system():
         1: "Body pistols undetectable by standard detectors, explosives, and poison gas prohibited",
         0: "No prohibitions"
     }
-    law_roll = max(0, min(10, random.randint(2, 12) - 7 + gov_roll, 10))
+    law_roll = max(0, min(10, random.randint(1, 6) + random.randint(1, 6)  - 7 + gov_roll, 10))
 
     for i, j in law_dict.items():
         if law_roll >= i:
